@@ -4,7 +4,7 @@ import json
 import httpx
 import jwt as pyjwt
 
-from datetime  import datetime
+from datetime  import datetime, timezone
 from typing    import Optional
 from functools import lru_cache
 
@@ -336,7 +336,7 @@ async def login_user(data: LoginRequest) -> dict:
             "preferred_lang": "te",
         }
         token = pyjwt.encode(
-            {**demo_user, "exp": int(datetime.utcnow().timestamp()) + 604800},
+            {**demo_user, "exp": int(datetime.now(timezone.utc).timestamp()) + 604800},
             DEMO_JWT_SECRET,
             algorithm="HS256"
         )
