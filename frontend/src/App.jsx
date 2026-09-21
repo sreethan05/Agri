@@ -7,21 +7,24 @@ import Weather    from './screens/Weather.jsx'
 import Market     from './screens/Market.jsx'
 import Calculator from './screens/Calculator.jsx'
 import History    from './screens/History.jsx'
+import Fertilizer from './screens/Fertilizer.jsx'
 import { getUser, getToken, logout, checkHealth } from './utils/api.js'
 
 const TABS = [
-  { id:'home',       icon:'🏠', label:'Home'    },
-  { id:'detect',     icon:'🔬', label:'Detect'  },
-  { id:'weather',    icon:'🌤',  label:'Weather' },
-  { id:'market',     icon:'📊', label:'Market'  },
-  { id:'calculator', icon:'🧮', label:'Profit'  },
-  { id:'history',    icon:'📋', label:'History' },
+  { id:'home',       icon:'🏠', label:'Home'       },
+  { id:'detect',     icon:'🔬', label:'Detect'     },
+  { id:'fertilizer', icon:'🌱', label:'Fertilizer' },
+  { id:'weather',    icon:'🌤',  label:'Weather'    },
+  { id:'market',     icon:'📊', label:'Market'     },
+  { id:'calculator', icon:'🧮', label:'Profit'     },
+  { id:'history',    icon:'📋', label:'History'    },
 ]
 
 const SCREENS = {
-  home: Home, detect: Detect, weather: Weather,
+  home: Home, detect: Detect, fertilizer: Fertilizer, weather: Weather,
   market: Market, calculator: Calculator, history: History,
 }
+
 
 export default function App() {
   // 1. Define State first
