@@ -184,7 +184,7 @@ Git
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/agri.git
+git clone https://github.com/sreethan05/agri.git
 cd agri
 ```
 
