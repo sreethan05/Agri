@@ -284,15 +284,19 @@ async def register_user(data: RegisterRequest) -> dict:
             raise HTTPException(status_code=400, detail="Registration failed.")
 
         # Update our profiles table with extra fields
-        db.table("profiles").upsert({
-            "id":             result.user.id,
-            "full_name":      data.full_name.strip(),
-            "phone":          data.phone,
-            "village":        data.village,
-            "district":       data.district,
-            "state":          data.state,
-            "preferred_lang": data.preferred_lang,
-        }).execute()
+        try:
+            db.table("profiles").upsert({
+                "id":             result.user.id,
+                "full_name":      data.full_name.strip(),
+                "phone":          data.phone,
+                "village":        data.village,
+                "district":       data.district,
+                "state":          data.state,
+                "preferred_lang": data.preferred_lang,
+            }).execute()
+        except Exception as pe:
+            # Trigger handle_new_user already created the profile row
+            print(f"ℹ️ Profile sync notice: {pe}")
 
         return {
             "message": (
