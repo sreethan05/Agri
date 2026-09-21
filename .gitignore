@@ -1,0 +1,17 @@
+.venv/
+venv/
+backend/__pycache__/
+*.pyc
+
+.env
+**/main.exe
+node_modules/
+frontend/dist/
+backend/dist/
+frontend/bin/main.exe
+build/
+.DS_Store
+.vscode/
+.idea/
+
+*.log

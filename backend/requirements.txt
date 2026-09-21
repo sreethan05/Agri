@@ -1,0 +1,16 @@
+fastapi==0.110.0
+uvicorn==0.27.0
+python-multipart==0.0.9
+tensorflow-intel==2.17.0
+pillow==10.4.0
+numpy==1.26.4
+gtts==2.5.3
+requests==2.32.3
+supabase==2.3.0
+gotrue==2.8.1
+PyJWT[crypto]==2.8.0
+cryptography==42.0.0
+httpx==0.24.1
+python-dotenv==1.0.1
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]>=3.3.0
