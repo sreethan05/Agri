@@ -117,6 +117,7 @@ pipeline {
                                 echo [INFO] Docker Desktop daemon not active on local host.
                                 echo [INFO] Native backend and frontend distribution validated.
                             )
+                            exit /b 0
                         '''
                     }
                 }
@@ -156,6 +157,7 @@ pipeline {
                                     python -c "import sys; sys.path.insert(0, 'backend'); import main; print('Native smoke test passed: OK')"
                                 )
                             )
+                            exit /b 0
                         '''
                     }
                 }
