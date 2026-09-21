@@ -49,7 +49,7 @@ def resource_path(relative_path):
 # 3. Environment
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 
-from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, status
+from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, status, Query
 from fastapi.security import HTTPBearer
 from fastapi.middleware.cors import CORSMiddleware
 from supabase import create_client, Client
@@ -58,7 +58,7 @@ from pydantic import BaseModel
 from typing import Optional
 import tensorflow as tf
 import numpy as np
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 from gtts import gTTS
 import requests
 import uvicorn
@@ -304,7 +304,7 @@ FALLBACK_WEATHER = {
 }
 
 @app.get("/weather")
-async def get_weather(lat: float, lon: float):
+def get_weather(lat: float, lon: float):
     url = (
         f"https://api.openweathermap.org/data/2.5/weather"
         f"?lat={lat}&lon={lon}&appid={WEATHER_API_KEY}&units=metric"
@@ -330,8 +330,8 @@ MARKET_API_KEY     = os.getenv(
 )
 
 # ── In-memory cache ───────────────────────────────────────────────────
-_market_cache      = []
-_market_cache_time = 0.0
+_market_cache      = {}
+_market_cache_time = {}
 CACHE_SECONDS      = 3600   # 1 hour
 
 # ── Fallback data ─────────────────────────────────────────────────────
@@ -369,38 +369,34 @@ FALLBACK_MARKET_DATA = [
 ]
 
 @app.get("/market-prices")
-async def get_market_prices(
+def get_market_prices(
     commodity: Optional[str] = None,
     state:     Optional[str] = None,
-    limit:     int           = 100,
+    limit:     int           = Query(default=100, ge=1, le=500),
 ):
     global _market_cache, _market_cache_time
 
     now = time.time()
+    cache_key = (commodity or "").casefold(), (state or "").casefold(), limit
 
     # ── 1. Serve from cache if still fresh ────────────────────────────
-    if _market_cache and (now - _market_cache_time) < CACHE_SECONDS:
-        records = _market_cache
-        if commodity:
-            records = [r for r in records
-                       if commodity.lower() in r.get("commodity","").lower()]
-        if state:
-            records = [r for r in records
-                       if state.lower() in r.get("state","").lower()]
+    if (
+        cache_key in _market_cache
+        and (now - _market_cache_time[cache_key]) < CACHE_SECONDS
+    ):
+        records = _market_cache[cache_key]
         return {"records": records, "source": "cache", "count": len(records)}
 
     # ── 2. Try live government API ────────────────────────────────────
-    url = (
-        f"https://api.data.gov.in/resource/{MARKET_RESOURCE_ID}"
-        f"?api-key={MARKET_API_KEY}&format=json&limit={limit}"
-    )
+    url = f"https://api.data.gov.in/resource/{MARKET_RESOURCE_ID}"
+    params = {"api-key": MARKET_API_KEY, "format": "json", "limit": limit}
     if commodity:
-        url += f"&filters[commodity]={commodity}"
+        params["filters[commodity]"] = commodity
     if state:
-        url += f"&filters[state]={state}"
+        params["filters[state]"] = state
 
     try:
-        response = requests.get(url, timeout=8)
+        response = requests.get(url, params=params, timeout=8)
         response.raise_for_status()   # raises on 4xx/5xx
 
         data    = response.json()
@@ -408,8 +404,8 @@ async def get_market_prices(
 
         if records:
             # Update cache
-            _market_cache      = records
-            _market_cache_time = now
+            _market_cache[cache_key]      = records
+            _market_cache_time[cache_key] = now
             print(f"✅ Market live: {len(records)} records")
             return {"records": records, "source": "live", "count": len(records)}
 
@@ -443,14 +439,17 @@ async def predict(
 ):
     if MODEL is None:
         raise HTTPException(503, "Model not loaded")
-    if not file.content_type.startswith("image/"):
+    if not file.content_type or not file.content_type.startswith("image/"):
         raise HTTPException(400, "File must be an image")
 
     contents = await file.read()
     if len(contents) > 15 * 1024 * 1024:
         raise HTTPException(400, "Image too large (max 15MB)")
 
-    img   = Image.open(io.BytesIO(contents)).convert('RGB').resize((224, 224))
+    try:
+        img = Image.open(io.BytesIO(contents)).convert('RGB').resize((224, 224))
+    except (UnidentifiedImageError, OSError, ValueError):
+        raise HTTPException(400, "Uploaded file is not a valid image")
     arr   = np.array(img, dtype=np.float32)
     arr   = tf.keras.applications.efficientnet.preprocess_input(arr)
     arr   = np.expand_dims(arr, axis=0)
@@ -646,7 +645,10 @@ if AUTH_ENABLED:
               .execute()
         else:
             global _LOCAL_PREDICTIONS
-            _LOCAL_PREDICTIONS = [p for p in _LOCAL_PREDICTIONS if p.get("id") != prediction_id]
+            _LOCAL_PREDICTIONS = [
+                p for p in _LOCAL_PREDICTIONS
+                if p.get("id") != prediction_id or p.get("user_id") != user_id
+            ]
         return {"message": "Deleted."}
     @app.get("/debug-token")
     async def debug_token(credentials = Depends(bearer_scheme)):

@@ -22,12 +22,8 @@ export default function Market() {
   const [filter,     setFilter]     = useState('All')
   const [searchText, setSearchText] = useState('')
 
-  useEffect(() => {
-    fetchPrices()
-  }, [])
-
-  const fetchPrices = async (commodity = '') => {
-    setLoading(true)
+  const fetchPrices = async (commodity = '', showLoading = true) => {
+    if (showLoading) setLoading(true)
     setError('')
     try {
       const data = await getMarketPrices(
@@ -46,6 +42,11 @@ export default function Market() {
     }
     setLoading(false)
   }
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => void fetchPrices('', false), 0)
+    return () => window.clearTimeout(timer)
+  }, [])
 
   const handleFilter = (crop) => {
     setFilter(crop)

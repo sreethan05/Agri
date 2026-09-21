@@ -75,12 +75,8 @@ export default function Weather() {
   const [loading, setLoading] = useState(true)
   const [error,   setError]   = useState('')
 
-  useEffect(() => {
-    fetchWeather()
-  }, [])
-
-  const fetchWeather = async () => {
-    setLoading(true)
+  const fetchWeather = async (showLoading = true) => {
+    if (showLoading) setLoading(true)
     setError('')
     try {
       // Get device location, fallback to Hyderabad
@@ -107,6 +103,11 @@ export default function Weather() {
     }
     setLoading(false)
   }
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => void fetchWeather(false), 0)
+    return () => window.clearTimeout(timer)
+  }, [])
 
   // ── Derive values from OpenWeather response ─────────────────────────
   const temp        = weather ? Math.round(weather.main?.temp)        : '--'

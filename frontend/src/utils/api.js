@@ -33,7 +33,14 @@ export const getToken        = () => localStorage.getItem(TOKEN_KEY)
 export const getRefreshToken = () => localStorage.getItem(REFRESH_KEY)
 export const getUser         = () => {
   const u = localStorage.getItem(USER_KEY)
-  return u ? JSON.parse(u) : null
+  if (!u) return null
+  try {
+    return JSON.parse(u)
+  } catch {
+    // A stale or manually edited value should not prevent the app from loading.
+    localStorage.removeItem(USER_KEY)
+    return null
+  }
 }
 export const isLoggedIn = () => !!getToken()
 

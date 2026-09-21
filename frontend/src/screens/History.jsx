@@ -6,16 +6,12 @@ export default function History({ user }) {
   const [loading,     setLoading]     = useState(true)
   const [error,       setError]       = useState('')
 
-  useEffect(() => {
-    fetchHistory()
-  }, [])
-
-  const fetchHistory = async () => {
-    setLoading(true)
+  const fetchHistory = async (showLoading = true) => {
+    if (showLoading) setLoading(true)
     try {
       const data = await getHistory()
       setPredictions(data.predictions || [])
-    } catch (e) {
+    } catch {
       setError('Could not load history.')
     }
     setLoading(false)
@@ -25,10 +21,15 @@ export default function History({ user }) {
     try {
       await deleteHistory(id)
       setPredictions(prev => prev.filter(p => p.id !== id))
-    } catch (e) {
+    } catch {
       setError('Delete failed.')
     }
   }
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => void fetchHistory(false), 0)
+    return () => window.clearTimeout(timer)
+  }, [])
 
   const SEV_COLOR = {
     critical:'#dc2626', medium:'#f59e0b', none:'#059669', unknown:'#6b7280'

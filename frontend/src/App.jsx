@@ -42,13 +42,13 @@ export default function App() {
     try {
       await checkHealth();
       setOnline(true);
-    } catch (e) {
+    } catch {
       // If it fails, wait 3 seconds and try one more time
       setTimeout(async () => {
         try {
           await checkHealth();
           setOnline(true);
-        } catch (err) {
+        } catch {
           setOnline(false);
         }
       }, 3000);
