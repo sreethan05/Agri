@@ -1,4 +1,4 @@
-// src/screens/Auth.jsx — True Full-Screen, Zero-Scroll AgriConnect Auth Design
+// src/screens/Auth.jsx — Centered Card, No-Scroll, Exact Match to Reference
 import { useState } from 'react'
 import { registerUser, loginUser, saveAuth } from '../utils/api.js'
 
@@ -11,7 +11,7 @@ const DISTRICTS = [
 
 // ── SVG Icons ───────────────────────────────────────────────────────────────
 const SvgLogoSprout = () => (
-  <svg width="26" height="26" viewBox="0 0 40 40" fill="none">
+  <svg width="24" height="24" viewBox="0 0 40 40" fill="none">
     <path d="M20 34V16" stroke="#ffffff" strokeWidth="3" strokeLinecap="round"/>
     <path d="M20 22C14 22 10 17 10 11C16 11 20 16 20 22Z" fill="#ffffff" fillOpacity="0.95"/>
     <path d="M20 20C26 20 30 15 30 9C24 9 20 14 20 20Z" fill="#ffffff" fillOpacity="0.95"/>
@@ -21,35 +21,28 @@ const SvgLogoSprout = () => (
 )
 
 const SvgUser = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
     <circle cx="12" cy="7" r="4"/>
   </svg>
 )
 
 const SvgLock = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
     <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
   </svg>
 )
 
-const SvgMail = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect width="20" height="16" x="2" y="4" rx="2"/>
-    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-  </svg>
-)
-
 const SvgEye = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
     <circle cx="12" cy="12" r="3"/>
   </svg>
 )
 
 const SvgEyeOff = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
     <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
     <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
@@ -66,14 +59,14 @@ const SvgLeafSimple = ({ color = '#ffffff', size = 16 }) => (
 
 const SvgShieldLock = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
-    <rect width="24" height="24" rx="12" fill="#1b4329" fillOpacity="0.12"/>
-    <path d="M12 4L4 7v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V7l-8-3z" stroke="#1b4329" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M9.5 12.5l2 2 3.5-3.5" stroke="#1b4329" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    <rect width="24" height="24" rx="6" fill="#1b4329" fillOpacity="0.1"/>
+    <path d="M12 5L5 8v5c0 4.5 3 8 7 9 4-1 7-4.5 7-9V8l-7-3z" stroke="#1b4329" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M9.5 12l2 2 3.5-3.5" stroke="#1b4329" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 )
 
 const SvgGoogle = () => (
-  <svg width="17" height="17" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
+  <svg width="16" height="16" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
     <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/>
     <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24Z"/>
     <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.03 0 12s.45 3.82 1.25 5.42l4.03-3.15Z"/>
@@ -90,7 +83,7 @@ export default function Auth({ onAuthSuccess }) {
   const [selectedLang, setSelectedLang] = useState('English')
   const [langMenuOpen, setLangMenuOpen] = useState(false)
 
-  // Form inputs
+  // Inputs
   const [emailOrPhone, setEmailOrPhone] = useState('')
   const [password, setPassword] = useState('')
   const [fullName, setFullName] = useState('')
@@ -139,7 +132,7 @@ export default function Auth({ onAuthSuccess }) {
         setError('Login successful, but token not found.')
       }
     } catch (err) {
-      setError(err.response?.data?.detail || 'Invalid credentials. Please try again or use Demo Login.')
+      setError(err.response?.data?.detail || 'Invalid credentials. Try test@agri.ai / test123456')
     } finally {
       setLoading(false)
     }
@@ -171,7 +164,7 @@ export default function Auth({ onAuthSuccess }) {
         district,
         preferred_lang: selectedLang === 'తెలుగు' ? 'te' : selectedLang === 'हिंदी' ? 'hi' : 'en'
       })
-      alert('Registration successful! You can now log in.')
+      alert('Account registered successfully! Please log in.')
       setMode('login')
     } catch (err) {
       setError(err.response?.data?.detail || 'Registration encountered an error.')
@@ -181,34 +174,47 @@ export default function Auth({ onAuthSuccess }) {
   }
 
   return (
-    <div className="fs-auth-root">
+    <div className="card-page-wrap">
       <style>{`
-        /* True Full-Screen Zero-Scroll Rules */
-        html, body {
-          height: 100% !important;
-          width: 100% !important;
+        /* Zero Scroll Master Container */
+        html, body, #root {
+          height: 100vh !important;
+          width: 100vw !important;
           margin: 0 !important;
           padding: 0 !important;
           overflow: hidden !important;
+          box-sizing: border-box !important;
         }
 
-        .fs-auth-root {
+        .card-page-wrap {
           height: 100vh;
           width: 100vw;
-          margin: 0;
-          padding: 0;
-          display: flex;
-          overflow: hidden;
-          background: #fafaf8;
+          background: #eaebe6;
           font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          color: #1a2e22;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 16px;
           box-sizing: border-box;
+          overflow: hidden;
         }
 
-        /* ── Left Hero Panel (52% width, 100vh height) ── */
-        .fs-hero {
-          flex: 1.1;
-          height: 100vh;
+        /* ── Centered Rounded Card (Fits exactly without scroll) ── */
+        .card-container {
+          width: 100%;
+          max-width: 960px;
+          height: min(650px, 92vh);
+          background: #ffffff;
+          border-radius: 28px;
+          box-shadow: 0 20px 50px -10px rgba(27, 67, 41, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.04);
+          display: flex;
+          overflow: hidden;
+        }
+
+        /* ── Left Side (Farm Hero) ── */
+        .card-left {
+          flex: 1.05;
+          height: 100%;
           position: relative;
           background-image: url('/farm_hero.jpg');
           background-size: cover;
@@ -216,121 +222,120 @@ export default function Auth({ onAuthSuccess }) {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          padding: clamp(24px, 4vh, 48px) clamp(24px, 4vw, 52px);
+          padding: 28px 26px;
           box-sizing: border-box;
           color: #ffffff;
           overflow: hidden;
         }
 
-        .fs-hero-overlay {
+        .card-left-overlay {
           position: absolute;
           inset: 0;
           background: linear-gradient(
             180deg,
-            rgba(0, 0, 0, 0.12) 0%,
-            rgba(16, 44, 25, 0.3) 40%,
-            rgba(10, 32, 18, 0.88) 100%
+            rgba(0, 0, 0, 0.1) 0%,
+            rgba(18, 48, 28, 0.28) 40%,
+            rgba(10, 32, 18, 0.86) 100%
           );
           pointer-events: none;
         }
 
-        .fs-hero-top {
+        .card-left-top {
           position: relative;
           z-index: 2;
         }
 
-        .fs-hero-badge {
-          width: 40px;
-          height: 40px;
+        .card-left-badge {
+          width: 36px;
+          height: 36px;
           border-radius: 50%;
           background: #fefce8;
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-          margin-bottom: clamp(12px, 2.5vh, 26px);
+          box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+          margin-bottom: 16px;
         }
 
-        .fs-hero-title {
+        .card-left-heading {
           font-family: 'DM Serif Display', Georgia, serif;
-          font-size: clamp(32px, 4.2vh, 46px);
+          font-size: 34px;
           line-height: 1.12;
           color: #ffffff;
-          margin: 0 0 12px;
-          letter-spacing: -0.5px;
-          text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+          margin: 0 0 10px;
+          letter-spacing: -0.4px;
+          text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
         }
 
-        .fs-hero-line {
-          width: 42px;
-          height: 3.5px;
+        .card-left-line {
+          width: 38px;
+          height: 3px;
           background: #4ade80;
           border-radius: 2px;
-          margin-bottom: clamp(12px, 2vh, 18px);
+          margin-bottom: 12px;
         }
 
-        .fs-hero-desc {
-          font-size: clamp(12.5px, 1.6vh, 14.5px);
-          line-height: 1.55;
+        .card-left-sub {
+          font-size: 12.5px;
+          line-height: 1.5;
           color: #f0fdf4;
-          max-width: 400px;
-          text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+          max-width: 320px;
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
           font-weight: 500;
         }
 
-        /* 3 Glass Bottom Cards */
-        .fs-glass-cards {
+        /* 3 Bottom Glass Feature Cards */
+        .card-left-glass {
           position: relative;
           z-index: 2;
           background: rgba(18, 48, 28, 0.72);
-          backdrop-filter: blur(14px);
+          backdrop-filter: blur(12px);
           border: 1px solid rgba(255, 255, 255, 0.18);
-          border-radius: 16px;
-          padding: clamp(10px, 1.6vh, 14px) 12px;
+          border-radius: 14px;
+          padding: 10px;
           display: grid;
           grid-template-columns: 1fr 1fr 1fr;
-          gap: 8px;
+          gap: 6px;
           text-align: center;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         }
 
-        .fs-glass-item {
+        .glass-col {
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
         }
 
-        .fs-glass-item:not(:last-child) {
+        .glass-col:not(:last-child) {
           border-right: 1px solid rgba(255, 255, 255, 0.12);
-          padding-right: 6px;
+          padding-right: 4px;
         }
 
-        .fs-glass-icon {
-          font-size: 18px;
-          margin-bottom: 4px;
+        .glass-icon {
+          font-size: 16px;
+          margin-bottom: 3px;
         }
 
-        .fs-glass-h {
-          font-size: 11.5px;
+        .glass-title {
+          font-size: 11px;
           font-weight: 800;
           color: #ffffff;
-          margin-bottom: 2px;
+          margin-bottom: 1px;
         }
 
-        .fs-glass-p {
-          font-size: 9.5px;
-          line-height: 1.3;
+        .glass-desc {
+          font-size: 9px;
+          line-height: 1.25;
           color: #d1fae5;
           opacity: 0.9;
         }
 
-        /* ── Right Auth Panel (48% width, 100vh height, Zero Scroll) ── */
-        .fs-auth {
-          flex: 0.9;
-          height: 100vh;
+        /* ── Right Side (Form) ── */
+        .card-right {
+          flex: 0.95;
+          height: 100%;
           background: #fafaf8;
-          padding: clamp(16px, 2.5vh, 28px) clamp(24px, 4vw, 52px);
+          padding: 20px 32px;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
@@ -339,204 +344,202 @@ export default function Auth({ onAuthSuccess }) {
           position: relative;
         }
 
-        /* Top Bar with Language */
-        .fs-top-bar {
+        /* Top Language Bar */
+        .top-lang-wrap {
           display: flex;
           justify-content: flex-end;
           position: relative;
         }
 
-        .fs-lang-btn {
+        .btn-lang {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
-          padding: 5px 12px;
-          border-radius: 18px;
+          gap: 5px;
+          padding: 4px 10px;
+          border-radius: 16px;
           border: 1px solid #e2e8f0;
           background: #ffffff;
-          font-size: 12px;
+          font-size: 11.5px;
           font-weight: 600;
           color: #334155;
           cursor: pointer;
-          transition: all 0.15s;
         }
 
-        .fs-lang-menu {
+        .dropdown-lang {
           position: absolute;
-          top: 32px;
+          top: 28px;
           right: 0;
           background: #ffffff;
           border: 1px solid #e2e8f0;
-          border-radius: 10px;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+          border-radius: 8px;
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
           overflow: hidden;
           z-index: 30;
-          min-width: 110px;
+          min-width: 100px;
         }
 
-        .fs-lang-option {
-          padding: 7px 12px;
-          font-size: 12px;
+        .dropdown-lang-opt {
+          padding: 6px 10px;
+          font-size: 11.5px;
           font-weight: 600;
           color: #334155;
           cursor: pointer;
         }
 
-        .fs-lang-option:hover {
+        .dropdown-lang-opt:hover {
           background: #f0fdf4;
           color: #166534;
         }
 
-        /* Brand & Headers */
-        .fs-brand-block {
+        /* Brand Block */
+        .brand-center {
           text-align: center;
-          margin: 2px 0 10px;
+          margin: 0 0 6px;
         }
 
-        .fs-brand-icon {
-          width: 46px;
-          height: 46px;
-          border-radius: 14px;
+        .brand-icon-box {
+          width: 40px;
+          height: 40px;
+          border-radius: 12px;
           background: linear-gradient(135deg, #1b4329 0%, #29603b 100%);
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 0 auto 8px;
-          box-shadow: 0 6px 16px rgba(27, 67, 41, 0.22);
+          margin: 0 auto 6px;
+          box-shadow: 0 4px 12px rgba(27, 67, 41, 0.2);
         }
 
-        .fs-brand-name {
-          font-size: 22px;
+        .brand-name {
+          font-size: 20px;
           font-weight: 800;
-          letter-spacing: -0.4px;
+          letter-spacing: -0.3px;
           color: #1b4329;
           margin: 0 0 2px;
         }
 
-        .fs-brand-tagline {
-          font-size: 11.5px;
+        .brand-tagline {
+          font-size: 11px;
           font-weight: 600;
           color: #64748b;
           letter-spacing: 0.3px;
+          margin: 0 0 6px;
+        }
+
+        .brand-dash {
+          width: 26px;
+          height: 2px;
+          background: #2e6943;
+          border-radius: 2px;
+          margin: 0 auto 8px;
+        }
+
+        .auth-heading {
+          font-size: 18px;
+          font-weight: 800;
+          color: #0f172a;
+          margin: 0 0 2px;
+        }
+
+        .auth-sub {
+          font-size: 11.5px;
+          color: #64748b;
           margin: 0 0 8px;
         }
 
-        .fs-brand-divider {
-          width: 28px;
-          height: 2.5px;
-          background: #2e6943;
-          border-radius: 2px;
-          margin: 0 auto 12px;
-        }
-
-        .fs-title {
-          font-size: clamp(18px, 2.2vh, 22px);
-          font-weight: 800;
-          color: #0f172a;
-          margin: 0 0 3px;
-        }
-
-        .fs-subtitle {
-          font-size: 12px;
-          color: #64748b;
-          margin: 0 0 10px;
-        }
-
-        /* Mode Switcher Tabs */
-        .fs-mode-tabs {
+        /* Clean Mode Switcher */
+        .mode-switch-bar {
           display: flex;
           background: #f1f5f9;
-          border-radius: 10px;
-          padding: 3px;
-          margin: 0 auto 12px;
-          max-width: 240px;
+          border-radius: 8px;
+          padding: 2px;
+          margin: 0 auto 8px;
+          max-width: 220px;
           border: 1px solid #e2e8f0;
         }
 
-        .fs-mode-tab {
+        .mode-switch-btn {
           flex: 1;
-          padding: 6px 0;
+          padding: 5px 0;
           border: none;
           background: transparent;
-          font-size: 12px;
+          font-size: 11.5px;
           font-weight: 700;
           color: #64748b;
-          border-radius: 8px;
+          border-radius: 6px;
           cursor: pointer;
-          transition: all 0.2s;
         }
 
-        .fs-mode-tab.active {
+        .mode-switch-btn.active {
           background: #ffffff;
           color: #1b4329;
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
         }
 
         /* Inputs */
-        .fs-input-group {
-          margin-bottom: 10px;
+        .field-group {
+          margin-bottom: 8px;
         }
 
-        .fs-input-wrap {
+        .field-wrap {
           position: relative;
           display: flex;
           align-items: center;
         }
 
-        .fs-input-icon {
+        .field-icon-left {
           position: absolute;
-          left: 14px;
+          left: 12px;
           pointer-events: none;
           display: flex;
           align-items: center;
         }
 
-        .fs-input {
+        .field-input {
           width: 100%;
-          height: clamp(40px, 4.6vh, 46px);
-          padding: 0 14px 0 42px;
+          height: 38px;
+          padding: 0 12px 0 36px;
           border: 1.5px solid #e2e8f0;
-          border-radius: 11px;
+          border-radius: 9px;
           background: #ffffff;
-          font-size: 13.5px;
+          font-size: 13px;
           color: #0f172a;
           outline: none;
           font-family: inherit;
-          transition: border-color 0.15s, box-shadow 0.15s;
           box-sizing: border-box;
+          transition: border-color 0.15s;
         }
 
-        .fs-input:focus {
+        .field-input:focus {
           border-color: #1b4329;
-          box-shadow: 0 0 0 3px rgba(27, 67, 41, 0.12);
+          box-shadow: 0 0 0 2px rgba(27, 67, 41, 0.12);
         }
 
-        .fs-input::placeholder {
+        .field-input::placeholder {
           color: #94a3b8;
-          font-size: 13px;
+          font-size: 12.5px;
         }
 
-        .fs-eye-btn {
+        .field-eye-btn {
           position: absolute;
-          right: 12px;
+          right: 10px;
           background: none;
           border: none;
-          padding: 4px;
+          padding: 2px;
           cursor: pointer;
           display: flex;
           align-items: center;
         }
 
         /* Checkbox row */
-        .fs-extra-row {
+        .action-row {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin-bottom: 12px;
-          font-size: 12px;
+          margin-bottom: 10px;
+          font-size: 11.5px;
         }
 
-        .fs-checkbox {
+        .checkbox-lbl {
           display: flex;
           align-items: center;
           gap: 6px;
@@ -546,129 +549,129 @@ export default function Auth({ onAuthSuccess }) {
           font-weight: 500;
         }
 
-        .fs-checkbox input {
+        .checkbox-lbl input {
           accent-color: #1b4329;
-          width: 15px;
-          height: 15px;
+          width: 14px;
+          height: 14px;
           cursor: pointer;
         }
 
-        .fs-forgot-link {
+        .forgot-link {
           color: #1b4329;
           font-weight: 700;
           cursor: pointer;
           text-decoration: none;
         }
 
-        /* Primary Action Button */
-        .fs-btn-primary {
+        /* Big Dark Button */
+        .btn-main {
           width: 100%;
-          height: clamp(40px, 4.8vh, 46px);
+          height: 40px;
           border: none;
-          border-radius: 11px;
+          border-radius: 10px;
           background: #1b4329;
           color: #ffffff;
-          font-size: 14.5px;
+          font-size: 14px;
           font-weight: 700;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 8px;
-          box-shadow: 0 3px 12px rgba(27, 67, 41, 0.25);
-          transition: background 0.15s, transform 0.1s;
+          box-shadow: 0 3px 10px rgba(27, 67, 41, 0.22);
+          transition: background 0.15s;
           font-family: inherit;
         }
 
-        .fs-btn-primary:hover:not(:disabled) {
+        .btn-main:hover:not(:disabled) {
           background: #143520;
         }
 
-        .fs-btn-primary:disabled {
+        .btn-main:disabled {
           background: #94a3b8;
           cursor: wait;
         }
 
         /* Divider */
-        .fs-divider {
+        .div-sep {
           display: flex;
           align-items: center;
-          margin: 10px 0;
+          margin: 8px 0;
           color: #94a3b8;
-          font-size: 11.5px;
+          font-size: 11px;
         }
 
-        .fs-divider::before,
-        .fs-divider::after {
+        .div-sep::before,
+        .div-sep::after {
           content: '';
           flex: 1;
           height: 1px;
           background: #e2e8f0;
         }
 
-        .fs-divider span {
-          padding: 0 10px;
+        .div-sep span {
+          padding: 0 8px;
         }
 
-        /* Secondary Action Buttons */
-        .fs-btn-secondary {
+        /* Secondary Buttons */
+        .btn-sub {
           width: 100%;
-          height: clamp(38px, 4.3vh, 42px);
+          height: 36px;
           border: 1.5px solid #e2e8f0;
-          border-radius: 11px;
+          border-radius: 9px;
           background: #ffffff;
           color: #1e293b;
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 600;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 8px;
-          margin-bottom: 8px;
+          margin-bottom: 6px;
           transition: all 0.15s;
           font-family: inherit;
         }
 
-        .fs-btn-secondary:hover {
+        .btn-sub:hover {
           background: #f8fafc;
           border-color: #cbd5e1;
         }
 
-        /* Security Card */
-        .fs-security-card {
+        /* Security Box */
+        .sec-box {
           background: #f4f6f0;
-          border-radius: 12px;
-          padding: 9px 14px;
+          border-radius: 10px;
+          padding: 8px 12px;
           display: flex;
           align-items: center;
           gap: 10px;
-          margin-top: 6px;
+          margin-top: 4px;
         }
 
-        .fs-sec-title {
-          font-size: 12px;
+        .sec-title {
+          font-size: 11.5px;
           font-weight: 700;
           color: #1b4329;
           margin-bottom: 1px;
         }
 
-        .fs-sec-desc {
-          font-size: 10.5px;
+        .sec-desc {
+          font-size: 10px;
           color: #64748b;
-          line-height: 1.3;
+          line-height: 1.25;
         }
 
-        /* Error Banner */
-        .fs-error-banner {
+        /* Error alert */
+        .err-pill {
           background: #fef2f2;
           border: 1px solid #fecaca;
-          border-radius: 9px;
-          padding: 8px 12px;
+          border-radius: 8px;
+          padding: 6px 10px;
           color: #b91c1c;
-          font-size: 12px;
+          font-size: 11.5px;
           font-weight: 600;
-          margin-bottom: 10px;
+          margin-bottom: 8px;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -676,301 +679,307 @@ export default function Auth({ onAuthSuccess }) {
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* Responsive on smaller mobile screens */
-        @media (max-width: 800px) {
-          .fs-auth-root {
-            flex-direction: column;
-            overflow-y: auto !important;
-            height: auto;
+        /* Responsive */
+        @media (max-width: 780px) {
+          .card-page-wrap {
+            padding: 0;
+            background: #fafaf8;
           }
-          .fs-hero {
+          .card-container {
+            border-radius: 0;
+            height: 100vh;
+            max-width: 100vw;
+            box-shadow: none;
+          }
+          .card-left {
             display: none;
           }
-          .fs-auth {
-            height: 100vh;
-            padding: 20px 18px;
+          .card-right {
+            padding: 16px;
           }
         }
       `}</style>
 
-      {/* ── LEFT HERO PANEL (Full Viewport Height) ── */}
-      <div className="fs-hero">
-        <div className="fs-hero-overlay" />
+      {/* ── Center Master Card ── */}
+      <div className="card-container">
 
-        {/* Top Content */}
-        <div className="fs-hero-top">
-          <div className="fs-hero-badge">
-            <SvgLeafSimple color="#1b4329" size={20} />
-          </div>
+        {/* ── Left Hero Side ── */}
+        <div className="card-left">
+          <div className="card-left-overlay" />
 
-          <h1 className="fs-hero-title">
-            Growing<br />
-            a better<br />
-            tomorrow
-          </h1>
-
-          <div className="fs-hero-line" />
-
-          <p className="fs-hero-desc">
-            Smart solutions for modern farming. Manage, Monitor and Maximize your yield with technology.
-          </p>
-        </div>
-
-        {/* Bottom 3 Glass Feature Cards */}
-        <div className="fs-glass-cards">
-          <div className="fs-glass-item">
-            <div className="fs-glass-icon">🍃</div>
-            <div className="fs-glass-h">Smart Farming</div>
-            <div className="fs-glass-p">Data driven decisions</div>
-          </div>
-
-          <div className="fs-glass-item">
-            <div className="fs-glass-icon">🌱</div>
-            <div className="fs-glass-h">Crop Health</div>
-            <div className="fs-glass-p">Monitor & protect crops</div>
-          </div>
-
-          <div className="fs-glass-item">
-            <div className="fs-glass-icon">📈</div>
-            <div className="fs-glass-h">Better Yield</div>
-            <div className="fs-glass-p">Sustainable increase</div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── RIGHT AUTH PANEL (Full Viewport Height, No Scroll) ── */}
-      <div className="fs-auth">
-
-        {/* Top Language Bar */}
-        <div className="fs-top-bar">
-          <button
-            type="button"
-            className="fs-lang-btn"
-            onClick={() => setLangMenuOpen(!langMenuOpen)}
-          >
-            <span>🌐</span>
-            <span>{selectedLang}</span>
-            <span style={{ fontSize: 9 }}>▼</span>
-          </button>
-
-          {langMenuOpen && (
-            <div className="fs-lang-menu">
-              {['English', 'తెలుగు', 'हिंदी'].map(l => (
-                <div
-                  key={l}
-                  className="fs-lang-option"
-                  onClick={() => { setSelectedLang(l); setLangMenuOpen(false) }}
-                >
-                  {l}
-                </div>
-              ))}
+          {/* Top content */}
+          <div className="card-left-top">
+            <div className="card-left-badge">
+              <SvgLeafSimple color="#1b4329" size={18} />
             </div>
-          )}
-        </div>
 
-        {/* Brand & Mode Switcher */}
-        <div className="fs-brand-block">
-          <div className="fs-brand-icon">
-            <SvgLogoSprout />
+            <h1 className="card-left-heading">
+              Growing<br />
+              a better<br />
+              tomorrow
+            </h1>
+
+            <div className="card-left-line" />
+
+            <p className="card-left-sub">
+              Smart solutions for modern farming. Manage, Monitor and Maximize your yield with technology.
+            </p>
           </div>
 
-          <h2 className="fs-brand-name">AgriConnect</h2>
-          <div className="fs-brand-tagline">Connect. Cultivate. Thrive.</div>
-          <div className="fs-brand-divider" />
+          {/* 3 Bottom Glass Cards */}
+          <div className="card-left-glass">
+            <div className="glass-col">
+              <div className="glass-icon">🍃</div>
+              <div className="glass-title">Smart Farming</div>
+              <div className="glass-desc">Data driven decisions</div>
+            </div>
 
-          <h3 className="fs-title">
-            {mode === 'login' ? 'Welcome Back!' : 'Create Account'}
-          </h3>
-          <p className="fs-subtitle">
-            {mode === 'login' ? 'Login to continue your journey' : 'Join our smart farming network'}
-          </p>
+            <div className="glass-col">
+              <div className="glass-icon">🌱</div>
+              <div className="glass-title">Crop Health</div>
+              <div className="glass-desc">Monitor & protect crops</div>
+            </div>
 
-          {/* Mode Tabs */}
-          <div className="fs-mode-tabs">
+            <div className="glass-col">
+              <div className="glass-icon">📈</div>
+              <div className="glass-title">Better Yield</div>
+              <div className="glass-desc">Increase productivity</div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Right Form Side ── */}
+        <div className="card-right">
+
+          {/* Top Language Bar */}
+          <div className="top-lang-wrap">
             <button
               type="button"
-              className={`fs-mode-tab ${mode === 'login' ? 'active' : ''}`}
-              onClick={() => { setMode('login'); setError('') }}
+              className="btn-lang"
+              onClick={() => setLangMenuOpen(!langMenuOpen)}
             >
-              Sign In
+              <span>🌐</span>
+              <span>{selectedLang}</span>
+              <span style={{ fontSize: 9 }}>▼</span>
             </button>
-            <button
-              type="button"
-              className={`fs-mode-tab ${mode === 'register' ? 'active' : ''}`}
-              onClick={() => { setMode('register'); setError('') }}
-            >
-              Register
-            </button>
-          </div>
-        </div>
 
-        {/* Error Notification */}
-        {error && (
-          <div className="fs-error-banner">
-            <span>⚠️ {error}</span>
-            <button
-              onClick={() => setError('')}
-              style={{ background: 'none', border: 'none', color: '#b91c1c', cursor: 'pointer', fontWeight: 800 }}
-            >
-              ×
-            </button>
-          </div>
-        )}
-
-        {/* ── AUTH FORM ── */}
-        <form onSubmit={mode === 'login' ? handleLogin : handleRegister} style={{ margin: '0' }}>
-          {/* Register: Full Name */}
-          {mode === 'register' && (
-            <div className="fs-input-group">
-              <div className="fs-input-wrap">
-                <span className="fs-input-icon"><SvgUser /></span>
-                <input
-                  type="text"
-                  className="fs-input"
-                  value={fullName}
-                  onChange={e => setFullName(e.target.value)}
-                  placeholder="Full Name"
-                  required
-                />
+            {langMenuOpen && (
+              <div className="dropdown-lang">
+                {['English', 'తెలుగు', 'हिंदी'].map(l => (
+                  <div
+                    key={l}
+                    className="dropdown-lang-opt"
+                    onClick={() => { setSelectedLang(l); setLangMenuOpen(false) }}
+                  >
+                    {l}
+                  </div>
+                ))}
               </div>
-            </div>
-          )}
-
-          {/* Email or Phone */}
-          <div className="fs-input-group">
-            <div className="fs-input-wrap">
-              <span className="fs-input-icon">
-                {mode === 'login' ? <SvgUser /> : <SvgMail />}
-              </span>
-              <input
-                type="text"
-                className="fs-input"
-                value={emailOrPhone}
-                onChange={e => setEmailOrPhone(e.target.value)}
-                placeholder="Email or Phone Number"
-                required
-              />
-            </div>
+            )}
           </div>
 
-          {/* Register: District Dropdown */}
-          {mode === 'register' && (
-            <div className="fs-input-group">
-              <div className="fs-input-wrap">
-                <span className="fs-input-icon">📍</span>
-                <select
-                  className="fs-input"
-                  value={district}
-                  onChange={e => setDistrict(e.target.value)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  {DISTRICTS.map(d => (
-                    <option key={d} value={d}>{d}</option>
-                  ))}
-                </select>
-              </div>
+          {/* Brand Identity */}
+          <div className="brand-center">
+            <div className="brand-icon-box">
+              <SvgLogoSprout />
             </div>
-          )}
 
-          {/* Password */}
-          <div className="fs-input-group">
-            <div className="fs-input-wrap">
-              <span className="fs-input-icon"><SvgLock /></span>
-              <input
-                type={showPass ? 'text' : 'password'}
-                className="fs-input"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="Password"
-                required
-              />
+            <h2 className="brand-name">AgriConnect</h2>
+            <div className="brand-tagline">Connect. Cultivate. Thrive.</div>
+            <div className="brand-dash" />
+
+            <h3 className="auth-heading">
+              {mode === 'login' ? 'Welcome Back!' : 'Create Account'}
+            </h3>
+            <p className="auth-sub">
+              {mode === 'login' ? 'Login to continue your journey' : 'Join our smart farming network'}
+            </p>
+
+            {/* Mode Switcher */}
+            <div className="mode-switch-bar">
               <button
                 type="button"
-                className="fs-eye-btn"
-                onClick={() => setShowPass(!showPass)}
+                className={`mode-switch-btn ${mode === 'login' ? 'active' : ''}`}
+                onClick={() => { setMode('login'); setError('') }}
               >
-                {showPass ? <SvgEyeOff /> : <SvgEye />}
+                Sign In
+              </button>
+              <button
+                type="button"
+                className={`mode-switch-btn ${mode === 'register' ? 'active' : ''}`}
+                onClick={() => { setMode('register'); setError('') }}
+              >
+                Register
               </button>
             </div>
           </div>
 
-          {/* Remember me & Forgot Password */}
-          {mode === 'login' && (
-            <div className="fs-extra-row">
-              <label className="fs-checkbox">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={e => setRememberMe(e.target.checked)}
-                />
-                <span>Remember me</span>
-              </label>
-
-              <span
-                className="fs-forgot-link"
-                onClick={() => alert('Use 1-Click Demo Login below for instant testing!')}
+          {/* Error Banner */}
+          {error && (
+            <div className="err-pill">
+              <span>⚠️ {error}</span>
+              <button
+                onClick={() => setError('')}
+                style={{ background: 'none', border: 'none', color: '#b91c1c', cursor: 'pointer', fontWeight: 800 }}
               >
-                Forgot Password?
-              </span>
+                ×
+              </button>
             </div>
           )}
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="fs-btn-primary"
-            disabled={loading}
-          >
-            {loading ? (
-              <>
-                <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⟳</span>
-                <span>Signing in...</span>
-              </>
-            ) : (
-              <>
-                <span>{mode === 'login' ? 'Login' : 'Create Account'}</span>
-                <SvgLeafSimple color="#ffffff" size={15} />
-              </>
+          {/* Form */}
+          <form onSubmit={mode === 'login' ? handleLogin : handleRegister} style={{ margin: 0 }}>
+            {/* Register: Full Name */}
+            {mode === 'register' && (
+              <div className="field-group">
+                <div className="field-wrap">
+                  <span className="field-icon-left"><SvgUser /></span>
+                  <input
+                    type="text"
+                    className="field-input"
+                    value={fullName}
+                    onChange={e => setFullName(e.target.value)}
+                    placeholder="Full Name"
+                    required
+                  />
+                </div>
+              </div>
             )}
-          </button>
-        </form>
 
-        {/* Divider */}
-        <div className="fs-divider">
-          <span>or</span>
-        </div>
+            {/* Email or Phone */}
+            <div className="field-group">
+              <div className="field-wrap">
+                <span className="field-icon-left"><SvgUser /></span>
+                <input
+                  type="text"
+                  className="field-input"
+                  value={emailOrPhone}
+                  onChange={e => setEmailOrPhone(e.target.value)}
+                  placeholder="Email or Phone Number"
+                  required
+                />
+              </div>
+            </div>
 
-        {/* Quick Login Options */}
-        <div>
-          <button
-            type="button"
-            className="fs-btn-secondary"
-            onClick={handleQuickDemo}
-          >
-            <SvgGoogle />
-            <span>Continue with Google</span>
-          </button>
+            {/* Register: District Dropdown */}
+            {mode === 'register' && (
+              <div className="field-group">
+                <div className="field-wrap">
+                  <span className="field-icon-left">📍</span>
+                  <select
+                    className="field-input"
+                    value={district}
+                    onChange={e => setDistrict(e.target.value)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    {DISTRICTS.map(d => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
 
-          <button
-            type="button"
-            className="fs-btn-secondary"
-            onClick={handleQuickDemo}
-            style={{ color: '#1b4329' }}
-          >
-            <SvgLeafSimple color="#1b4329" size={15} />
-            <span>Continue with Demo Account (1-Click)</span>
-          </button>
-        </div>
+            {/* Password */}
+            <div className="field-group">
+              <div className="field-wrap">
+                <span className="field-icon-left"><SvgLock /></span>
+                <input
+                  type={showPass ? 'text' : 'password'}
+                  className="field-input"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="Password"
+                  required
+                />
+                <button
+                  type="button"
+                  className="field-eye-btn"
+                  onClick={() => setShowPass(!showPass)}
+                >
+                  {showPass ? <SvgEyeOff /> : <SvgEye />}
+                </button>
+              </div>
+            </div>
 
-        {/* Security Badge Card */}
-        <div className="fs-security-card">
-          <SvgShieldLock />
-          <div>
-            <div className="fs-sec-title">Your data is secure with us</div>
-            <div className="fs-sec-desc">We use advanced encryption to protect your information.</div>
+            {/* Remember Me / Forgot Password */}
+            {mode === 'login' && (
+              <div className="action-row">
+                <label className="checkbox-lbl">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={e => setRememberMe(e.target.checked)}
+                  />
+                  <span>Remember me</span>
+                </label>
+
+                <span
+                  className="forgot-link"
+                  onClick={() => alert('For instant login, click "Continue with Demo Account" below!')}
+                >
+                  Forgot Password?
+                </span>
+              </div>
+            )}
+
+            {/* Big Dark Action Button */}
+            <button
+              type="submit"
+              className="btn-main"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span style={{ animation: 'spin 1s linear infinite', display: 'inline-block' }}>⟳</span>
+                  <span>Authenticating...</span>
+                </>
+              ) : (
+                <>
+                  <span>{mode === 'login' ? 'Login' : 'Create Account'}</span>
+                  <SvgLeafSimple color="#ffffff" size={15} />
+                </>
+              )}
+            </button>
+          </form>
+
+          {/* Divider */}
+          <div className="div-sep">
+            <span>or</span>
           </div>
-        </div>
 
+          {/* Alternative Buttons */}
+          <div>
+            <button
+              type="button"
+              className="btn-sub"
+              onClick={handleQuickDemo}
+            >
+              <SvgGoogle />
+              <span>Continue with Google</span>
+            </button>
+
+            <button
+              type="button"
+              className="btn-sub"
+              onClick={handleQuickDemo}
+              style={{ color: '#1b4329' }}
+            >
+              <SvgLeafSimple color="#1b4329" size={14} />
+              <span>Continue with Demo Account (1-Click)</span>
+            </button>
+          </div>
+
+          {/* Security Box */}
+          <div className="sec-box">
+            <SvgShieldLock />
+            <div>
+              <div className="sec-title">Your data is secure with us</div>
+              <div className="sec-desc">We use advanced encryption to protect your information.</div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   )
