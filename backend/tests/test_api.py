@@ -86,5 +86,18 @@ class TestAgriBackend(unittest.TestCase):
         self.assertIn("predictions", data)
         self.assertIsInstance(data.get("predictions"), list)
 
+    def test_07_fertilizer_advisory(self):
+        """Verify fertilizer advisory endpoint and crop schedule"""
+        response = self.client.get("/fertilizers?crop=Tomato")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data.get("crop"), "Tomato")
+        self.assertIn("schedule", data)
+        schedule = data["schedule"]
+        self.assertIn("npk_ratio", schedule)
+        self.assertIn("stages", schedule)
+        self.assertGreater(len(schedule["stages"]), 0)
+
 if __name__ == "__main__":
     unittest.main()
+

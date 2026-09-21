@@ -679,6 +679,118 @@ if AUTH_ENABLED:
             "key_ids":  [k.get("kid") for k in jwks.get("keys", [])],
         }
 
+    @app.get("/fertilizers")
+    async def get_fertilizer_recommendations(
+        crop: Optional[str] = Query(None, description="Crop name: Tomato, Potato, Pepper")
+    ):
+        """
+        Agronomic fertilizer dosage, application schedule, and organic alternatives
+        curated for Indian farming conditions (Telangana & Andhra Pradesh).
+        """
+        advisory_data = {
+            "Tomato": {
+                "npk_ratio": "120:80:100 kg/ha",
+                "stages": [
+                    {
+                        "stage": "Basal (Land Preparation)",
+                        "chemical": "DAP 50 kg + MOP 35 kg + Urea 25 kg per acre",
+                        "organic": "Well-decomposed FYM 10 tonnes + Vermicompost 2 tonnes + Neem Cake 100 kg per acre",
+                        "tips": "Incorporate Neem cake deeply to suppress soil-borne nematodes and fungal wilt."
+                    },
+                    {
+                        "stage": "Vegetative Growth (20-25 days after transplanting)",
+                        "chemical": "Urea 30 kg + 19:19:19 foliar spray (5g/L)",
+                        "organic": "Jeevamrutha 200 Litres/acre with irrigation water every 15 days.",
+                        "tips": "Spray Panchagavya 3% for vigorous branch growth and leaf expansion."
+                    },
+                    {
+                        "stage": "Flowering & Fruit Setting (45-50 days)",
+                        "chemical": "13:00:45 (Potassium Nitrate) 5g/L + Boron 20% 1g/L",
+                        "organic": "Sour buttermilk spray (500ml in 10L water) to prevent flower drop.",
+                        "tips": "Ensure uniform moisture; water stress during flowering causes blossom end rot."
+                    },
+                    {
+                        "stage": "Fruit Development & Harvesting",
+                        "chemical": "00:00:50 (Potassium Sulphate) 5g/L + Calcium Nitrate 2g/L",
+                        "organic": "Wood ash dressing around plant root zone (provides organic potassium).",
+                        "tips": "Potassium improves fruit firmness, color, and transport shelf-life."
+                    }
+                ],
+                "telugu_summary": "టమాట పంటకు భాస్వరం మరియు పొటాష్ సకాలంలో అందించాలి. పూత దశలో బోరాన్ మరియు కాల్షియం పిచికారీ చేయడం వల్ల కాయలు పగలకుండా ఉంటాయి."
+            },
+            "Potato": {
+                "npk_ratio": "150:100:120 kg/ha",
+                "stages": [
+                    {
+                        "stage": "Basal / Planting",
+                        "chemical": "DAP 75 kg + MOP 50 kg + Urea 35 kg per acre",
+                        "organic": "FYM 12 tonnes + Trichoderma viride enriched compost 250 kg per acre",
+                        "tips": "Treat seed tubers with Trichoderma before planting to prevent black scurf."
+                    },
+                    {
+                        "stage": "Earthing Up (30 days)",
+                        "chemical": "Urea 35 kg + Micronutrient mix foliar spray 2.5g/L",
+                        "organic": "Vermicompost 500 kg applied near tuber zone during earthing up.",
+                        "tips": "Adequate soil cover around stolons prevents tuber greening."
+                    },
+                    {
+                        "stage": "Tuber Bulking (50-65 days)",
+                        "chemical": "00:52:34 (MKP) 5g/L + 00:00:50 5g/L",
+                        "organic": "Jeevamrutha spray (10% solution) every 10 days.",
+                        "tips": "Stop nitrogen fertilizers completely to channel all nutrients to tuber enlargement."
+                    }
+                ],
+                "telugu_summary": "బంగాళాదుంప దుంప ఊరే దశలో పొటాష్ ఎరువులు తప్పనిసరి. నత్రజని ఎక్కువగా వేస్తే మొక్కలు ఏపుగా పెరిగి దుంపలు చిన్నవిగా ఉంటాయి."
+            },
+            "Pepper": {
+                "npk_ratio": "100:60:80 kg/ha",
+                "stages": [
+                    {
+                        "stage": "Basal Application",
+                        "chemical": "Single Super Phosphate (SSP) 150 kg + MOP 30 kg + Urea 25 kg per acre",
+                        "organic": "Compost 8 tonnes + Neem Cake 150 kg per acre",
+                        "tips": "SSP provides essential sulphur which enhances capsaicin pungency and plant vigor."
+                    },
+                    {
+                        "stage": "Vegetative & Branching (30 DAT)",
+                        "chemical": "Urea 25 kg + Zinc Sulphate 5g/L foliar spray",
+                        "organic": "Cow urine (Gomutra) 10% solution spray as biostimulant and pest repellent.",
+                        "tips": "Zinc deficiency causes 'little leaf' syndrome in bell peppers and chillies."
+                    },
+                    {
+                        "stage": "Flowering & Fruit Bearing (60 DAT onwards)",
+                        "chemical": "13:00:45 4g/L + Micronutrient formulation 2ml/L alternating every 14 days",
+                        "organic": "Waste Decomposer solution 200L/acre via flood or drip irrigation.",
+                        "tips": "Avoid high temperatures during pollination; provide light mulch to cool root zone."
+                    }
+                ],
+                "telugu_summary": "మిర్చి లేదా క్యాప్సికం పంటలో పూత రాలకుండా 13:00:45 మరియు జింక్ పిచికారీ చేయాలి. వేప పిండి వాడటం వల్ల వేరుకుళ్ళు రాకుండా ఉంటుంది."
+            }
+        }
+
+        if crop:
+            crop_key = crop.capitalize()
+            if crop_key in advisory_data:
+                return {
+                    "crop": crop_key,
+                    "schedule": advisory_data[crop_key],
+                    "all_crops": list(advisory_data.keys())
+                }
+            else:
+                raise HTTPException(
+                    status_code=404,
+                    detail=f"Crop '{crop}' not found. Available crops: {list(advisory_data.keys())}"
+                )
+
+        return {
+            "crops": advisory_data,
+            "supported_crops": list(advisory_data.keys()),
+            "general_organic_guide": {
+                "jeevamrutha": "200L water + 10kg fresh desi cow dung + 5-10L cow urine + 2kg jaggery + 2kg gram flour (besan) + handful of fertile soil. Ferment for 48 hours under shade stirring twice daily.",
+                "neem_astra": "100L water + 5kg crushed neem leaves/seeds + 5L cow urine + 1kg cow dung. Ferment 48 hrs. Strains out sucking pests and caterpillars."
+            }
+        }
+
 # ═══════════════════════════════════════════════════════════════════════
 #  ENTRY POINT
 # ═══════════════════════════════════════════════════════════════════════

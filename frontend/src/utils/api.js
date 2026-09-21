@@ -224,3 +224,10 @@ export const getHistory    = async (limit = 20) =>
   (await api.get(`/history?limit=${limit}`)).data
 export const deleteHistory = async (id) =>
   (await api.delete(`/history/${id}`)).data
+
+export const getFertilizerAdvisory = async (crop = '') => {
+  const url = crop ? `/fertilizers?crop=${encodeURIComponent(crop)}` : '/fertilizers'
+  const { data } = await api.get(url)
+  return data
+}
+
