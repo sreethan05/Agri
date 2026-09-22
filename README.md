@@ -1,4 +1,4 @@
-# 🌿 Agri AI — Intelligent Crop Disease Detection for Indian Farmers
+# 🌿 Agri AI   — Intelligent Crop Disease Detection for Indian Farmers
 
 <div align="center">
 
